@@ -1,9 +1,13 @@
 import { useEffect, useState } from "react"
 import { Square } from "./Square"
+import { NextRoundPopUp } from "./NextRoundPopUp"
 
-//      
-export const PlayerVsPlayer = () => {
-  const [isX, setIsX] = useState<boolean>(true)
+interface PlayerVsPlayerInterface{
+  isX: boolean,
+  setIsX: (value: boolean) => void
+}
+     
+export const PlayerVsPlayer = ({isX, setIsX}:PlayerVsPlayerInterface) => {
   const [value, setValue] = useState<Array< null | string >>(Array(9).fill(null))
   const [status, setStatus] = useState<string>('')
 
@@ -11,21 +15,25 @@ export const PlayerVsPlayer = () => {
   const [countO, setCountO] = useState<number>(0)
   const [tie, setTie] = useState<number>(0)
 
+  const [isGameEnd, setIsGameEnd] = useState<boolean>(false)
   
   useEffect(()=>{
     const winner = countWinner(value)
 
     if(winner){
-     setStatus(`Winner: ${winner}`) 
+     setStatus(`${winner}`) 
      if(winner === 'x'){
         setCountX(countX + 1)
+        setIsGameEnd(!isGameEnd)
      }
      if(winner === 'O'){
         setCountO(countO + 1)
+        setIsGameEnd(!isGameEnd)
      }
     }else if (isBoardFull(value)) {
         setStatus('It\'s a tie!');
         setTie(tie + 1)
+        setIsGameEnd(!isGameEnd)
     }else{
       setStatus(`Next player:${isX ? 'X' : 'O'}`)
     }
@@ -73,8 +81,8 @@ export const PlayerVsPlayer = () => {
   }
   
   return (
-    <>
-      <div>
+    <div className=" relative w-full flex flex-col gap-4 items-center">
+      <div className=" flex flex-col gap-5">
         <h1>{status}</h1>
         <div onClick={reset}>rest</div>
         <div className=" flex gap-[20px]">
@@ -87,12 +95,41 @@ export const PlayerVsPlayer = () => {
           <Square value={value[4]} handleClick={()=>handleClick(4)} />
           <Square value={value[5]} handleClick={()=>handleClick(5)} />
         </div>
-        <div className=" flex gap-[20px]">
+        <div className=" flex gap-[20px] ">
           <Square value={value[6]} handleClick={()=>handleClick(6)} />
           <Square value={value[7]} handleClick={()=>handleClick(7)} />
           <Square value={value[8]} handleClick={()=>handleClick(8)} />
         </div>
       </div>
-    </>
+
+        <div className=" flex gap-5" >
+          <div className=" w-[96px] h-[64px] 
+          bg-[#31C3BD] rounded-xl items-center flex flex-col justify-center">
+            <h3 className=" text-[#1A2A33] font-medium text-sm">
+              {`X (P1)`}
+            </h3>
+            <div className=" text-[#1A2A33] font-bold text-xl">
+              {countX}
+            </div>
+          </div>
+          <div className=" w-[96px] h-[64px] 
+          bg-[#A8BFC9] rounded-xl items-center flex flex-col justify-center">
+            <h3 className=" text-[#1A2A33] font-medium text-sm">TIES</h3>
+            <div className=" text-[#1A2A33] font-bold text-xl">{tie}</div>
+          </div>
+          <div className=" w-[96px] h-[64px] 
+          bg-[#F2B137] rounded-xl items-center flex flex-col justify-center">
+            <h3 className=" text-[#1A2A33] font-medium text-sm">{`O (P2)`}</h3>
+            <div className=" text-[#1A2A33] font-bold text-xl">{countO}</div>
+          </div>
+        </div>
+
+        { isGameEnd ? 
+        <NextRoundPopUp 
+        status={status} 
+        setValue={setValue} 
+        setIsGameEnd={setIsGameEnd}/> 
+        : null}
+    </div>
   )
 }

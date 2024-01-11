@@ -1,52 +1,42 @@
-import { useState, useEffect } from "react"
+import { useState, useMemo } from "react"
 import { Square } from "./Square"
 
-export const PlayerVsCpu = () => {
-  const [isX, setIsX] = useState(true)
+export const PlayerVsCpu = (props:{
+  isX: boolean,
+  setIsX: (value: boolean) => void,
+  isCpuX: boolean
+}) => {
   const [value, setValue] = useState<Array<null | string>>(Array(9).fill(null));
   const [status, setStatus] = useState<string>('');
+  const [isPlayerTurn, setIsPlayerTurn] = useState<boolean>(props.isX ? true : false)
 
-  useEffect(() => {
-    const winner = countWinner(value);
-
-    if (winner) {
-      setStatus(`Winner: ${winner}`);
-    } else if (isBoardFull(value)) {
-      setStatus('It\'s a tie!');
-    } else {
-      // If it's CPU's turn, make the CPU move after a short delay
-      if (!isX) {
-        const timeoutId = setTimeout(() => {
-          makeCpuMove();
-        }, 500); // Adjust the delay as needed
-        return () => clearTimeout(timeoutId);
-      } else {
-        setStatus(`Next player:${isX ? 'X' : 'O'}`);
-      }
-    }
-  }, [value, isX]);
+  const [countX, setCountX] = useState<number>(0)
+  const [countO, setCountO] = useState<number>(0)
+  const [tie, setTie] = useState<number>(0)
 
   const handleClick = (i: number) => {
     
     const updatedValue = [...value]
-    updatedValue[i] = 'X'
+    updatedValue[i] = props.isX ? 'X' : 'O'
 
     setValue(updatedValue)
-    setIsX(!isX)
+    setIsPlayerTurn(!isPlayerTurn)
   }
 
   const makeCpuMove = () =>{
-    const emptySquares = value.map((square, index) => (square === null ? index : -1)).filter(index => index !== -1);
-   
-    if (emptySquares.length > 0) {
-      const randomIndex = Math.floor(Math.random() * emptySquares.length);
-      const cpuMove = emptySquares[randomIndex];
+      const emptySquares = value
+        .map((square, index) => (square === null ? index : -1))
+        .filter(index => index !== -1)
 
-      const updatedValue = [...value];
-      updatedValue[cpuMove] = 'O'; 
+      if (emptySquares.length > 0) {
+        const randomIndex = Math.floor(Math.random() * emptySquares.length)
+        const cpuMove = emptySquares[randomIndex];
 
-      setValue(updatedValue);
-      setIsX(!isX);
+        const updatedValue = [...value];
+        updatedValue[cpuMove] = props.isCpuX ? 'X' : 'O'; 
+
+        setValue(updatedValue)
+        setIsPlayerTurn(!isPlayerTurn)
     }
   }
 
@@ -76,14 +66,41 @@ export const PlayerVsCpu = () => {
 
   
   const reset = () =>{
-    setIsX(true)
+    props.setIsX(true)
     setValue(Array(9).fill(null))
   }
 
+  useMemo(() => {
+    const winner = countWinner(value);
+
+    if (winner) {
+      if(winner === 'X'){
+        setCountX(countX + 1)
+      }
+      if(winner === 'O'){
+        setCountO(countO + 1)
+      }
+      setStatus(`Winner: ${winner}`);
+    } else if (isBoardFull(value)) {
+      setTie(tie + 1)
+      setStatus('It\'s a tie!');
+    } else {
+      setStatus(`Next player:${props.isX ? 'X' : 'O'}`);
+    }
+    if(isPlayerTurn === false){
+      const timeoutId = setTimeout(() => {
+          makeCpuMove();
+        }, 500);
+        return () => clearTimeout(timeoutId);
+    }
+       
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [value, props.isX]);
 
   return (
     <>
-      <div>
+       <div className=" flex flex-col gap-5">
         <h1>{status}</h1>
         <div onClick={reset}>rest</div>
         <div className=" flex gap-[20px]">
@@ -96,12 +113,34 @@ export const PlayerVsCpu = () => {
           <Square value={value[4]} handleClick={()=>handleClick(4)} />
           <Square value={value[5]} handleClick={()=>handleClick(5)} />
         </div>
-        <div className=" flex gap-[20px]">
+        <div className=" flex gap-[20px] ">
           <Square value={value[6]} handleClick={()=>handleClick(6)} />
           <Square value={value[7]} handleClick={()=>handleClick(7)} />
           <Square value={value[8]} handleClick={()=>handleClick(8)} />
         </div>
       </div>
+
+     <div className=" flex gap-5" >
+          <div className=" w-[96px] h-[64px] 
+          bg-[#31C3BD] rounded-xl items-center flex flex-col justify-center">
+            <h3 className=" text-[#1A2A33] font-medium text-sm">
+              {`X (P1)`}
+            </h3>
+            <div className=" text-[#1A2A33] font-bold text-xl">
+              {countX}
+            </div>
+          </div>
+          <div className=" w-[96px] h-[64px] 
+          bg-[#A8BFC9] rounded-xl items-center flex flex-col justify-center">
+            <h3 className=" text-[#1A2A33] font-medium text-sm">TIES</h3>
+            <div className=" text-[#1A2A33] font-bold text-xl">{tie}</div>
+          </div>
+          <div className=" w-[96px] h-[64px] 
+          bg-[#F2B137] rounded-xl items-center flex flex-col justify-center">
+            <h3 className=" text-[#1A2A33] font-medium text-sm">{`O (P2)`}</h3>
+            <div className=" text-[#1A2A33] font-bold text-xl">{countO}</div>
+          </div>
+        </div>
     </>
   )
 }
