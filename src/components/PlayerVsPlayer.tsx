@@ -10,6 +10,8 @@ interface PlayerVsPlayerInterface{
 export const PlayerVsPlayer = ({isX, setIsX}:PlayerVsPlayerInterface) => {
   const [value, setValue] = useState<Array< null | string >>(Array(9).fill(null))
   const [status, setStatus] = useState<string>('')
+  
+  const [isFirstPlayerX, setIsFirstPlayerX] = useState<boolean>(isX ? true : false)
 
   const [countX, setCountX] = useState<number>(0)
   const [countO, setCountO] = useState<number>(0)
@@ -38,7 +40,7 @@ export const PlayerVsPlayer = ({isX, setIsX}:PlayerVsPlayerInterface) => {
       setStatus(`Next player:${isX ? 'X' : 'O'}`)
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  },[value, isX])
+  },[value, isFirstPlayerX])
 
   const reset = () =>{
     setIsX(true)
@@ -51,9 +53,12 @@ export const PlayerVsPlayer = ({isX, setIsX}:PlayerVsPlayerInterface) => {
     if(countWinner(value || value[i])){
       return
     }
-    value[i] = isX ? 'x' : 'O'
+    if(isFirstPlayerX === false){
+      value[i] = 'X'
+    }
+    value[i] = isFirstPlayerX ? 'x' : 'O'
     setValue(value)
-    setIsX(!isX)
+    setIsFirstPlayerX(!isFirstPlayerX)
   }
 
   const countWinner = (squares: Array<string | null>): string | null => {
@@ -106,7 +111,7 @@ export const PlayerVsPlayer = ({isX, setIsX}:PlayerVsPlayerInterface) => {
           <div className=" w-[96px] h-[64px] 
           bg-[#31C3BD] rounded-xl items-center flex flex-col justify-center">
             <h3 className=" text-[#1A2A33] font-medium text-sm">
-              {`X (P1)`}
+              {`X ${isX ? '(P1)' : '(P2)'}`}
             </h3>
             <div className=" text-[#1A2A33] font-bold text-xl">
               {countX}
@@ -119,7 +124,7 @@ export const PlayerVsPlayer = ({isX, setIsX}:PlayerVsPlayerInterface) => {
           </div>
           <div className=" w-[96px] h-[64px] 
           bg-[#F2B137] rounded-xl items-center flex flex-col justify-center">
-            <h3 className=" text-[#1A2A33] font-medium text-sm">{`O (P2)`}</h3>
+            <h3 className=" text-[#1A2A33] font-medium text-sm">{`O ${isX ? '(P2)' : '(P1)'}`}</h3>
             <div className=" text-[#1A2A33] font-bold text-xl">{countO}</div>
           </div>
         </div>

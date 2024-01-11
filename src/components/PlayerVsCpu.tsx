@@ -15,7 +15,8 @@ export const PlayerVsCpu = (props:{
   const [tie, setTie] = useState<number>(0)
 
   const handleClick = (i: number) => {
-    
+    if(value[i]!= null)
+      return
     const updatedValue = [...value]
     updatedValue[i] = props.isX ? 'X' : 'O'
 
