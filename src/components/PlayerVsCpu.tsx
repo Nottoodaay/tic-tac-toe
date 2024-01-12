@@ -83,10 +83,9 @@ export const PlayerVsCpu = (props:{
       }
       setStatus(`Winner: ${winner}`);
     } else if (isBoardFull(value)) {
-      setTie(tie + 1)
-      setStatus('It\'s a tie!');
+      setTie(tie + 1);
     } else {
-      setStatus(`Next player:${props.isX ? 'X' : 'O'}`);
+      setStatus(`${props.isX ? 'X' : 'O'} TURN`);
     }
     if(isPlayerTurn === false){
       const timeoutId = setTimeout(() => {
@@ -102,8 +101,24 @@ export const PlayerVsCpu = (props:{
   return (
     <>
        <div className=" flex flex-col gap-5">
-        <h1>{status}</h1>
-        <div onClick={reset}>rest</div>
+        <div className=" flex gap-[48px]">
+            <div className=" w-[72px] h-[32px] bg-[url('/assets/logo.svg')] bg-cover"></div>
+            <h1 className=" w-[96px] h-[40px] bg-[#1F3641] 
+            flex items-center justify-center 
+            font-bold text-[#A8BFC9]
+            rounded-xl border-b-4 border-[#10212A]">{status}</h1>
+            
+            <div  
+            className=" cursor-pointer w-[40px] h-[40px] bg-[#A8BFC9] 
+            rounded-xl border-b-4 border-[#6B8997] 
+            flex items-center justify-center
+            "
+            onClick={reset}>
+              <div className=" w-[14px] h-[14px] 
+              bg-[url('/assets/icon-restart.svg')] bg-cover"></div>
+            </div>
+          </div>
+
         <div className=" flex gap-[20px]">
           <Square value={value[0]} handleClick={()=>handleClick(0)} />
           <Square value={value[1]} handleClick={()=>handleClick(1)} />

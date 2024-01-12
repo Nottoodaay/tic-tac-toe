@@ -16,7 +16,7 @@ function App() {
     h-[100vh]">
 
       { 
-      playerVsPlayer ? <PlayerVsPlayer isX={isX} setIsX={setIsX}/> 
+      playerVsPlayer ? <PlayerVsPlayer isX={isX}/> 
       : 
       playerVsCpu ? <PlayerVsCpu isX={isX} setIsX={setIsX} isCpuX={isCpuX}/>
       :
@@ -25,6 +25,7 @@ function App() {
       setPlayerVsPlayer={setPlayerVsPlayer} 
       setIsX={setIsX}
       setIsCpuX={setIsCpuX}
+      isX={isX}
       />}
     </div>
   )
