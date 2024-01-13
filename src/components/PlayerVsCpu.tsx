@@ -82,12 +82,10 @@ export const PlayerVsCpu = (props:{
 
     if (winner) {
       if(winner === 'X'){
-        setIsPlayerTurn(!isPlayerTurn)
         setCountX(countX + 1)
         setIsGameEnd(!isGameEnd)
       }
       if(winner === 'O'){  
-        setIsPlayerTurn(!isPlayerTurn) 
         setCountO(countO + 1)
         setIsGameEnd(!isGameEnd)
       }
