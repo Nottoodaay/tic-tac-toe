@@ -1,12 +1,20 @@
 
 export const NextRoundPopUp = (props:{
   setValue: (value: Array< null | string >) => void,
-  setIsGameEnd: (value: boolean) => void
+  setIsGameEnd: (value: boolean) => void,
+  setPlayerVsCpu: (value: boolean) => void,
+  setPlayerVsPlayer: (value: boolean) => void
   status: string,
 }) => {
   const nextRound = () =>{
     props.setValue(Array(9).fill(null))
     props.setIsGameEnd(false)
+  }
+
+  const quit = () =>{
+    props.setValue(Array(9).fill(null))
+    props.setPlayerVsPlayer(false)
+    props.setPlayerVsCpu(false)
   }
   return (
     <div className=" w-[100vw] h-[100vh] 
@@ -22,7 +30,7 @@ export const NextRoundPopUp = (props:{
 
           <div className=" flex gap-4">
               <button 
-              onClick={nextRound} 
+              onClick={quit} 
               className=" w-[76px] h-[52px] rounded-xl 
               bg-[#A8BFC9] border-b-[#6B8997] border-b-4
               text-base font-bold text-[#1A2A33]

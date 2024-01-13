@@ -16,9 +16,19 @@ function App() {
     h-[100vh]">
 
       { 
-      playerVsPlayer ? <PlayerVsPlayer isX={isX}/> 
+      playerVsPlayer ? 
+      <PlayerVsPlayer
+       setPlayerVsCpu={setPlayerVsCpu} 
+       setPlayerVsPlayer={setPlayerVsPlayer} 
+       isX={isX}/> 
       : 
-      playerVsCpu ? <PlayerVsCpu isX={isX} setIsX={setIsX} isCpuX={isCpuX}/>
+      playerVsCpu ? 
+      <PlayerVsCpu 
+      setPlayerVsCpu={setPlayerVsCpu} 
+      setPlayerVsPlayer={setPlayerVsPlayer} 
+      isX={isX} 
+      setIsX={setIsX} 
+      isCpuX={isCpuX}/>
       :
       <DisplayGameMenu 
       setPlayerVsCpu={setPlayerVsCpu} 

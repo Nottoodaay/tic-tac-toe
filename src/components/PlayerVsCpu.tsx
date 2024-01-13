@@ -1,14 +1,19 @@
 import { useState, useMemo } from "react"
 import { Square } from "./Square"
+import { NextRoundPopUp } from "./NextRoundPopUp"
 
 export const PlayerVsCpu = (props:{
   isX: boolean,
   setIsX: (value: boolean) => void,
-  isCpuX: boolean
+  isCpuX: boolean,
+  setPlayerVsPlayer: (value: boolean) => void,
+  setPlayerVsCpu: (value: boolean) => void
 }) => {
   const [value, setValue] = useState<Array<null | string>>(Array(9).fill(null));
   const [status, setStatus] = useState<string>('');
   const [isPlayerTurn, setIsPlayerTurn] = useState<boolean>(props.isX ? true : false)
+
+  const [isGameEnd, setIsGameEnd] = useState<boolean>(false)
 
   const [countX, setCountX] = useState<number>(0)
   const [countO, setCountO] = useState<number>(0)
@@ -17,6 +22,7 @@ export const PlayerVsCpu = (props:{
   const handleClick = (i: number) => {
     if(value[i]!= null)
       return
+  
     const updatedValue = [...value]
     updatedValue[i] = props.isX ? 'X' : 'O'
 
@@ -76,18 +82,26 @@ export const PlayerVsCpu = (props:{
 
     if (winner) {
       if(winner === 'X'){
+        setIsPlayerTurn(!isPlayerTurn)
         setCountX(countX + 1)
+        setIsGameEnd(!isGameEnd)
       }
-      if(winner === 'O'){
+      if(winner === 'O'){  
+        setIsPlayerTurn(!isPlayerTurn) 
         setCountO(countO + 1)
+        setIsGameEnd(!isGameEnd)
       }
-      setStatus(`Winner: ${winner}`);
-    } else if (isBoardFull(value)) {
+    } else if (isBoardFull(value)) { 
       setTie(tie + 1);
+      setIsGameEnd(!isGameEnd)
     } else {
       setStatus(`${props.isX ? 'X' : 'O'} TURN`);
     }
+    
     if(isPlayerTurn === false){
+      if(winner){
+        return
+      }
       const timeoutId = setTimeout(() => {
           makeCpuMove();
         }, 500);
@@ -99,7 +113,7 @@ export const PlayerVsCpu = (props:{
   }, [value, props.isX]);
 
   return (
-    <>
+    <div  className=" relative w-full flex flex-col gap-4 items-center">
        <div className=" flex flex-col gap-5">
         <div className=" flex gap-[48px]">
             <div className=" w-[72px] h-[32px] bg-[url('/assets/logo.svg')] bg-cover"></div>
@@ -120,19 +134,19 @@ export const PlayerVsCpu = (props:{
           </div>
 
         <div className=" flex gap-[20px]">
-          <Square value={value[0]} handleClick={()=>handleClick(0)} />
-          <Square value={value[1]} handleClick={()=>handleClick(1)} />
-          <Square value={value[2]} handleClick={()=>handleClick(2)} />
+          <Square value={value[0]} handleClick={()=>handleClick(0)} isPlayerX={props.isX} />
+          <Square value={value[1]} handleClick={()=>handleClick(1)} isPlayerX={props.isX} />
+          <Square value={value[2]} handleClick={()=>handleClick(2)} isPlayerX={props.isX} />
         </div>
         <div className=" flex gap-[20px]">
-          <Square value={value[3]} handleClick={()=>handleClick(3)} />
-          <Square value={value[4]} handleClick={()=>handleClick(4)} />
-          <Square value={value[5]} handleClick={()=>handleClick(5)} />
+          <Square value={value[3]} handleClick={()=>handleClick(3)} isPlayerX={props.isX} />
+          <Square value={value[4]} handleClick={()=>handleClick(4)} isPlayerX={props.isX} />
+          <Square value={value[5]} handleClick={()=>handleClick(5)} isPlayerX={props.isX} />
         </div>
         <div className=" flex gap-[20px] ">
-          <Square value={value[6]} handleClick={()=>handleClick(6)} />
-          <Square value={value[7]} handleClick={()=>handleClick(7)} />
-          <Square value={value[8]} handleClick={()=>handleClick(8)} />
+          <Square value={value[6]} handleClick={()=>handleClick(6)} isPlayerX={props.isX} />
+          <Square value={value[7]} handleClick={()=>handleClick(7)} isPlayerX={props.isX} />
+          <Square value={value[8]} handleClick={()=>handleClick(8)} isPlayerX={props.isX} />
         </div>
       </div>
 
@@ -157,6 +171,15 @@ export const PlayerVsCpu = (props:{
             <div className=" text-[#1A2A33] font-bold text-xl">{countO}</div>
           </div>
         </div>
-    </>
+        {isGameEnd ? 
+        <NextRoundPopUp 
+        status={status} 
+        setValue={setValue} 
+        setIsGameEnd={setIsGameEnd} 
+        setPlayerVsCpu={props.setPlayerVsCpu}
+        setPlayerVsPlayer={props.setPlayerVsPlayer}
+        />
+        : null}
+    </div>
   )
 }
