@@ -21,7 +21,7 @@ export const NextRoundPopUp = (props:{
     fixed top-0 bg-[#000000] bg-opacity-50  
     flex items-center justify-center">
         <div className=" w-full h-[228px] bg-[#1F3641] 
-        flex items-center justify-center flex-col">
+        flex items-center justify-center flex-col gap-6">
           
           <div className={` text-2xl font-bold 
           ${props.status === 'x' ? 'text-[#31C3BD]' 

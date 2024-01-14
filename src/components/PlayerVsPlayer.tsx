@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react"
 import { Square } from "./Square"
 import { NextRoundPopUp } from "./NextRoundPopUp"
+import { ResetPopUp } from "./ResetPopUp"
 
 interface PlayerVsPlayerInterface{
   isX: boolean,
@@ -19,11 +20,12 @@ export const PlayerVsPlayer = ({isX, setPlayerVsCpu, setPlayerVsPlayer}:PlayerVs
   const [tie, setTie] = useState<number>(0)
 
   const [isGameEnd, setIsGameEnd] = useState<boolean>(false)
-  
+  const [isRest, setIsRest] = useState<boolean>(false)
 
   const reset = () =>{
     setIsFirstPlayerX(isX)
     setValue(Array(9).fill(null))
+    setIsRest(false)
   }
 
   const handleClick = (i: number) =>{
@@ -101,7 +103,7 @@ export const PlayerVsPlayer = ({isX, setPlayerVsCpu, setPlayerVsPlayer}:PlayerVs
           rounded-xl border-b-4 border-[#6B8997] 
           flex items-center justify-center
           "
-          onClick={reset}>
+          onClick={()=>setIsRest(!isRest)}>
             <div className=" w-[14px] h-[14px] 
             bg-[url('/assets/icon-restart.svg')] bg-cover"></div>
           </div>
@@ -155,6 +157,14 @@ export const PlayerVsPlayer = ({isX, setPlayerVsCpu, setPlayerVsPlayer}:PlayerVs
         setPlayerVsCpu={setPlayerVsCpu}
         /> 
         : null}
+      
+        {
+          isRest ? 
+          <ResetPopUp 
+          setIsReset={setIsRest}
+           onClick={reset}/> : null
+        }
+
     </div>
   )
 }

@@ -1,6 +1,7 @@
 import { useState, useMemo } from "react"
 import { Square } from "./Square"
 import { NextRoundPopUp } from "./NextRoundPopUp"
+import { ResetPopUp } from "./ResetPopUp"
 
 export const PlayerVsCpu = (props:{
   isX: boolean,
@@ -14,6 +15,7 @@ export const PlayerVsCpu = (props:{
   const [isPlayerTurn, setIsPlayerTurn] = useState<boolean>(props.isX ? true : false)
 
   const [isGameEnd, setIsGameEnd] = useState<boolean>(false)
+  const [isReset, setIsReset] = useState<boolean>(false)
 
   const [countX, setCountX] = useState<number>(0)
   const [countO, setCountO] = useState<number>(0)
@@ -73,8 +75,9 @@ export const PlayerVsCpu = (props:{
 
   
   const reset = () =>{
-    props.setIsX(true)
+    setIsPlayerTurn(props.isX ? true : false)
     setValue(Array(9).fill(null))
+    setIsReset(!isReset)
   }
 
   useMemo(() => {
@@ -93,11 +96,12 @@ export const PlayerVsCpu = (props:{
       setTie(tie + 1);
       setIsGameEnd(!isGameEnd)
     } else {
-      setStatus(`${props.isX ? 'X' : 'O'} TURN`);
+      setStatus(`${isPlayerTurn ? 'X' : 'O'} TURN`);
     }
     
     if(isPlayerTurn === false){
       if(winner){
+        setIsPlayerTurn(props.isX ? true : false)
         return
       }
       const timeoutId = setTimeout(() => {
@@ -152,7 +156,7 @@ export const PlayerVsCpu = (props:{
           <div className=" w-[96px] h-[64px] 
           bg-[#31C3BD] rounded-xl items-center flex flex-col justify-center">
             <h3 className=" text-[#1A2A33] font-medium text-sm">
-              {`X (P1)`}
+            {`X ${props.isX ? '(P1)' : '(CPU)'}`}
             </h3>
             <div className=" text-[#1A2A33] font-bold text-xl">
               {countX}
@@ -165,10 +169,11 @@ export const PlayerVsCpu = (props:{
           </div>
           <div className=" w-[96px] h-[64px] 
           bg-[#F2B137] rounded-xl items-center flex flex-col justify-center">
-            <h3 className=" text-[#1A2A33] font-medium text-sm">{`O (P2)`}</h3>
+            <h3 className=" text-[#1A2A33] font-medium text-sm">{`O ${props.isX ? '(CPU)' : '(P1)'}`}</h3>
             <div className=" text-[#1A2A33] font-bold text-xl">{countO}</div>
           </div>
         </div>
+        
         {isGameEnd ? 
         <NextRoundPopUp 
         status={status} 
@@ -178,6 +183,14 @@ export const PlayerVsCpu = (props:{
         setPlayerVsPlayer={props.setPlayerVsPlayer}
         />
         : null}
+
+        {
+          isReset ? 
+          <ResetPopUp 
+          setIsReset={setIsReset}
+           onClick={reset}/> : null
+        }
+
     </div>
   )
 }
