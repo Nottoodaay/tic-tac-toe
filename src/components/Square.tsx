@@ -8,14 +8,14 @@ interface SquareProps{
 export const Square = ({value, handleClick, isPlayerX}:SquareProps) => {
 
   const x = <div className=" w-[40px] h-[40px] 
-  bg-[url('assets/icon-x.svg')] bg-cover "></div>
+  bg-[url('../assets/icon-x.svg')] bg-cover "></div>
 
   const o = <div className="  w-[40px] h-[40px] 
-  bg-[url('assets/icon-o.svg')] bg-cover" ></div>
+  bg-[url('../assets/icon-o.svg')] bg-cover" ></div>
   
   const hoover = <div className={` w-[40px] h-[40px] bg-cover
-  ${isPlayerX ? ' hover:bg-[url("assets/icon-x-outline.svg")]' 
-  : ' hover:bg-[url("assets/icon-o-outline.svg")]'}
+  ${isPlayerX ? ' hover:bg-[url("../assets/icon-x-outline.svg")]' 
+  : ' hover:bg-[url("../assets/icon-o-outline.svg")]'}
   `}></div>
 
   return (
