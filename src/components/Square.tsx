@@ -3,9 +3,10 @@ interface SquareProps{
     value: string | null,
     isPlayerX: boolean,
     handleClick: ()=> void,
+    isWinner: boolean
 }
 
-export const Square = ({value, handleClick, isPlayerX}:SquareProps) => {
+export const Square = ({value, handleClick, isPlayerX, isWinner}:SquareProps) => {
 
   const x = <div className=" w-[40px] h-[40px] 
   bg-[url('../assets/icon-x.svg')] bg-cover "></div>
@@ -20,8 +21,11 @@ export const Square = ({value, handleClick, isPlayerX}:SquareProps) => {
 
   return (
     <button 
-    className={` w-[96px] h-[96px] bg-[#1F3641] 
-    rounded-xl border-b-8 border-[#10212A] flex items-center justify-center`} 
+    className={` w-[96px] h-[96px] 
+    ${isWinner && value === "X" ? 'bg-[#31C3BD] border-[#118C87]'
+    : isWinner && value === "O" ? 'bg-[#F2B137] border-[#CC8B13]'
+    : 'bg-[#1F3641] border-[#10212A]' }  
+    rounded-xl border-b-8 flex items-center justify-center`} 
     onClick={handleClick}
     >{value === 'X' ? x : value === 'O' ? o : hoover}</button>
   )

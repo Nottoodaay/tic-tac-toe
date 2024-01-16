@@ -3,18 +3,21 @@ export const NextRoundPopUp = (props:{
   setValue: (value: Array< null | string >) => void,
   setIsGameEnd: (value: boolean) => void,
   setPlayerVsCpu: (value: boolean) => void,
-  setPlayerVsPlayer: (value: boolean) => void
+  setPlayerVsPlayer: (value: boolean) => void,
+  setWinnerCombo: (value: []) => void,
   status: string,
 }) => {
   const nextRound = () =>{
     props.setValue(Array(9).fill(null))
     props.setIsGameEnd(false)
+    props.setWinnerCombo([])
   }
 
   const quit = () =>{
     props.setValue(Array(9).fill(null))
     props.setPlayerVsPlayer(false)
     props.setPlayerVsCpu(false)
+    props.setWinnerCombo([])
   }
   return (
     <div className=" w-[100vw] h-[100vh] 

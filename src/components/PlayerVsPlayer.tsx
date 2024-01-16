@@ -11,8 +11,8 @@ interface PlayerVsPlayerInterface{
      
 export const PlayerVsPlayer = ({isX, setPlayerVsCpu, setPlayerVsPlayer}:PlayerVsPlayerInterface) => {
   const [value, setValue] = useState<Array< null | string >>(Array(9).fill(null))
-  const [status, setStatus] = useState<string>('')
-  
+  const [status, setStatus] = useState<string>('X TURN')
+
   const [isFirstPlayerX, setIsFirstPlayerX] = useState<boolean>(isX ? true : false)
 
   const [countX, setCountX] = useState<number>(0)
@@ -21,6 +21,8 @@ export const PlayerVsPlayer = ({isX, setPlayerVsCpu, setPlayerVsPlayer}:PlayerVs
 
   const [isGameEnd, setIsGameEnd] = useState<boolean>(false)
   const [isRest, setIsRest] = useState<boolean>(false)
+
+  const [winnerCombo, setWinnerCombo] = useState<number[]>([])
 
   const reset = () =>{
     setIsFirstPlayerX(isX)
@@ -31,12 +33,11 @@ export const PlayerVsPlayer = ({isX, setPlayerVsCpu, setPlayerVsPlayer}:PlayerVs
   const handleClick = (i: number) =>{
     if(value[i]!= null)
       return
+    
     if(countWinner(value || value[i])){
       return
     }
-    if(isFirstPlayerX === false){
-      value[i] = 'X'
-    }
+
     value[i] = isFirstPlayerX ? 'X' : 'O'
     setValue(value)
     setIsFirstPlayerX(!isFirstPlayerX)
@@ -56,6 +57,7 @@ export const PlayerVsPlayer = ({isX, setPlayerVsCpu, setPlayerVsPlayer}:PlayerVs
 
     for(const [a,b,c] of winnerLines){
       if(squares[a] && squares[a] === squares[b] && squares[a] === squares[c]){
+        setWinnerCombo([a,b,c])
         return squares[a] as string
       }
     }
@@ -70,20 +72,25 @@ export const PlayerVsPlayer = ({isX, setPlayerVsCpu, setPlayerVsPlayer}:PlayerVs
     const winner = countWinner(value)
 
     if(winner){
-     setStatus(`${winner}`) 
      if(winner === 'X'){
         setCountX(countX + 1)
-        setIsGameEnd(!isGameEnd)
+        setIsGameEnd(true)
      }
      if(winner === 'O'){
         setCountO(countO + 1)
-        setIsGameEnd(!isGameEnd)
+        setIsGameEnd(true)
      }
     }else if (isBoardFull(value)) {
         setTie(tie + 1)
-        setIsGameEnd(!isGameEnd)
+        setIsGameEnd(true)
     }else{
       setStatus(`${isFirstPlayerX ? 'X' : 'O'} TURN`)
+    }
+
+    if(isFirstPlayerX === false){
+      if(winner){
+        setIsFirstPlayerX(isX ? true : false)
+      }
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   },[value, isFirstPlayerX])
@@ -110,19 +117,57 @@ export const PlayerVsPlayer = ({isX, setPlayerVsCpu, setPlayerVsPlayer}:PlayerVs
         </div>
         
         <div className=" flex gap-[20px]">
-          <Square value={value[0]} handleClick={()=>handleClick(0)} isPlayerX={isFirstPlayerX} />
-          <Square value={value[1]} handleClick={()=>handleClick(1)} isPlayerX={isFirstPlayerX} />
-          <Square value={value[2]} handleClick={()=>handleClick(2)} isPlayerX={isFirstPlayerX} />
+          <Square 
+          value={value[0]} 
+          handleClick={()=>handleClick(0)} 
+          isPlayerX={isFirstPlayerX} 
+          isWinner={winnerCombo.includes(0) ? true : false} />
+          <Square 
+          value={value[1]} 
+          handleClick={()=>handleClick(1)} 
+          isPlayerX={isFirstPlayerX} 
+          isWinner={winnerCombo.includes(1) ? true : false}
+          />
+          <Square 
+          value={value[2]} 
+          handleClick={()=>handleClick(2)} 
+          isPlayerX={isFirstPlayerX} 
+          isWinner={winnerCombo.includes(2) ? true : false}
+          />
         </div>
         <div className=" flex gap-[20px]">
-          <Square value={value[3]} handleClick={()=>handleClick(3)} isPlayerX={isFirstPlayerX} />
-          <Square value={value[4]} handleClick={()=>handleClick(4)} isPlayerX={isFirstPlayerX} />
-          <Square value={value[5]} handleClick={()=>handleClick(5)} isPlayerX={isFirstPlayerX} />
+          <Square 
+          value={value[3]} 
+          handleClick={()=>handleClick(3)} 
+          isPlayerX={isFirstPlayerX}
+          isWinner={winnerCombo.includes(3) ? true : false} />
+          <Square 
+          value={value[4]} 
+          handleClick={()=>handleClick(4)} 
+          isPlayerX={isFirstPlayerX} 
+          isWinner={winnerCombo.includes(4) ? true : false} />
+          <Square 
+          value={value[5]} 
+          handleClick={()=>handleClick(5)} 
+          isPlayerX={isFirstPlayerX} 
+          isWinner={winnerCombo.includes(5) ? true : false} />
         </div>
         <div className=" flex gap-[20px] ">
-          <Square value={value[6]} handleClick={()=>handleClick(6)} isPlayerX={isFirstPlayerX} />
-          <Square value={value[7]} handleClick={()=>handleClick(7)} isPlayerX={isFirstPlayerX} />
-          <Square value={value[8]} handleClick={()=>handleClick(8)} isPlayerX={isFirstPlayerX} />
+          <Square 
+          value={value[6]} 
+          handleClick={()=>handleClick(6)} 
+          isPlayerX={isFirstPlayerX} 
+          isWinner={winnerCombo.includes(6) ? true : false} />
+          <Square 
+          value={value[7]} 
+          handleClick={()=>handleClick(7)} 
+          isPlayerX={isFirstPlayerX}
+          isWinner={winnerCombo.includes(7) ? true : false} />
+          <Square 
+          value={value[8]} 
+          handleClick={()=>handleClick(8)} 
+          isPlayerX={isFirstPlayerX}
+          isWinner={winnerCombo.includes(8) ? true : false} />
         </div>
       </div>
 
@@ -155,6 +200,7 @@ export const PlayerVsPlayer = ({isX, setPlayerVsCpu, setPlayerVsPlayer}:PlayerVs
         setIsGameEnd={setIsGameEnd}
         setPlayerVsPlayer={setPlayerVsPlayer}
         setPlayerVsCpu={setPlayerVsCpu}
+        setWinnerCombo={setWinnerCombo}
         /> 
         : null}
       

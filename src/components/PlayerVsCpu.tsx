@@ -21,6 +21,8 @@ export const PlayerVsCpu = (props:{
   const [countO, setCountO] = useState<number>(0)
   const [tie, setTie] = useState<number>(0)
 
+  const [winnerCombo, setWinnerCombo] = useState<number[]>([]) 
+
   const handleClick = (i: number) => {
     if(value[i]!= null)
       return
@@ -63,6 +65,7 @@ export const PlayerVsCpu = (props:{
 
     for(const [a,b,c] of winnerLines){
       if(squares[a] && squares[a] === squares[b] && squares[a] === squares[c]){
+        setWinnerCombo([a,b,c])
         return squares[a] as string
       }
     }
@@ -110,7 +113,6 @@ export const PlayerVsCpu = (props:{
         return () => clearTimeout(timeoutId);
     }
        
-
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [value, props.isX]);
 
@@ -136,19 +138,64 @@ export const PlayerVsCpu = (props:{
           </div>
 
         <div className=" flex gap-[20px]">
-          <Square value={value[0]} handleClick={()=>handleClick(0)} isPlayerX={props.isX} />
-          <Square value={value[1]} handleClick={()=>handleClick(1)} isPlayerX={props.isX} />
-          <Square value={value[2]} handleClick={()=>handleClick(2)} isPlayerX={props.isX} />
+          <Square 
+          value={value[0]} 
+          handleClick={()=>handleClick(0)} 
+          isPlayerX={props.isX}
+          isWinner={winnerCombo.includes(0) ? true : false}
+           />
+           <Square 
+           value={value[1]} 
+           handleClick={()=>handleClick(1)} 
+           isPlayerX={props.isX}
+           isWinner={winnerCombo.includes(1) ? true : false}
+           />
+           <Square 
+           value={value[2]} 
+           handleClick={()=>handleClick(2)} 
+           isPlayerX={props.isX}
+           isWinner={winnerCombo.includes(2) ? true : false}
+           />
         </div>
         <div className=" flex gap-[20px]">
-          <Square value={value[3]} handleClick={()=>handleClick(3)} isPlayerX={props.isX} />
-          <Square value={value[4]} handleClick={()=>handleClick(4)} isPlayerX={props.isX} />
-          <Square value={value[5]} handleClick={()=>handleClick(5)} isPlayerX={props.isX} />
+          <Square 
+          value={value[3]} 
+          handleClick={()=>handleClick(3)} 
+          isPlayerX={props.isX}
+          isWinner={winnerCombo.includes(3) ? true : false}
+           />
+           <Square 
+          value={value[4]} 
+          handleClick={()=>handleClick(4)} 
+          isPlayerX={props.isX}
+          isWinner={winnerCombo.includes(4) ? true : false}
+           />
+           <Square 
+          value={value[5]} 
+          handleClick={()=>handleClick(5)} 
+          isPlayerX={props.isX}
+          isWinner={winnerCombo.includes(5) ? true : false}
+           />
         </div>
         <div className=" flex gap-[20px] ">
-          <Square value={value[6]} handleClick={()=>handleClick(6)} isPlayerX={props.isX} />
-          <Square value={value[7]} handleClick={()=>handleClick(7)} isPlayerX={props.isX} />
-          <Square value={value[8]} handleClick={()=>handleClick(8)} isPlayerX={props.isX} />
+        <Square 
+          value={value[6]} 
+          handleClick={()=>handleClick(6)} 
+          isPlayerX={props.isX}
+          isWinner={winnerCombo.includes(6) ? true : false}
+           />
+           <Square 
+          value={value[7]} 
+          handleClick={()=>handleClick(7)} 
+          isPlayerX={props.isX}
+          isWinner={winnerCombo.includes(7) ? true : false}
+           />
+           <Square 
+          value={value[8]} 
+          handleClick={()=>handleClick(8)} 
+          isPlayerX={props.isX}
+          isWinner={winnerCombo.includes(8) ? true : false}
+           />
         </div>
       </div>
 
@@ -181,6 +228,7 @@ export const PlayerVsCpu = (props:{
         setIsGameEnd={setIsGameEnd} 
         setPlayerVsCpu={props.setPlayerVsCpu}
         setPlayerVsPlayer={props.setPlayerVsPlayer}
+        setWinnerCombo={setWinnerCombo}
         />
         : null}
 
