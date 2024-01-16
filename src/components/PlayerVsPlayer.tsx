@@ -11,9 +11,9 @@ interface PlayerVsPlayerInterface{
      
 export const PlayerVsPlayer = ({isX, setPlayerVsCpu, setPlayerVsPlayer}:PlayerVsPlayerInterface) => {
   const [value, setValue] = useState<Array< null | string >>(Array(9).fill(null))
-  const [status, setStatus] = useState<string>('X TURN')
+  const [status, setStatus] = useState<string>('')
 
-  const [isFirstPlayerX, setIsFirstPlayerX] = useState<boolean>(isX ? true : false)
+  const [isFirstPlayerX, setIsFirstPlayerX] = useState(true)
 
   const [countX, setCountX] = useState<number>(0)
   const [countO, setCountO] = useState<number>(0)
@@ -37,7 +37,7 @@ export const PlayerVsPlayer = ({isX, setPlayerVsCpu, setPlayerVsPlayer}:PlayerVs
     if(countWinner(value || value[i])){
       return
     }
-
+    
     value[i] = isFirstPlayerX ? 'X' : 'O'
     setValue(value)
     setIsFirstPlayerX(!isFirstPlayerX)
@@ -91,7 +91,7 @@ export const PlayerVsPlayer = ({isX, setPlayerVsCpu, setPlayerVsPlayer}:PlayerVs
 
     if(isFirstPlayerX === false){
       if(winner){
-        setIsFirstPlayerX(isX ? true : false)
+        setIsFirstPlayerX(true)
       }
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps

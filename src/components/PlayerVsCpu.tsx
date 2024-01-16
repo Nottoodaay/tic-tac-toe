@@ -101,7 +101,13 @@ export const PlayerVsCpu = (props:{
       setTie(tie + 1);
       setIsGameEnd(!isGameEnd)
     } else {
-      setStatus(`${isPlayerTurn ? 'X' : 'O'} TURN`);
+      if(props.isX){
+        setStatus(`${isPlayerTurn ? 'X' : 'O'} TURN`);
+      }
+      if(props.isCpuX){
+        setStatus(`${isPlayerTurn ? 'O' : 'X'} TURN`);
+      }
+      
     }
     
     if(isPlayerTurn === false){
