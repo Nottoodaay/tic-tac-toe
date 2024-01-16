@@ -75,10 +75,12 @@ export const PlayerVsPlayer = ({isX, setPlayerVsCpu, setPlayerVsPlayer}:PlayerVs
      if(winner === 'X'){
         setCountX(countX + 1)
         setIsGameEnd(true)
+        setStatus('X')
      }
      if(winner === 'O'){
         setCountO(countO + 1)
         setIsGameEnd(true)
+        setStatus('O')
      }
     }else if (isBoardFull(value)) {
         setTie(tie + 1)

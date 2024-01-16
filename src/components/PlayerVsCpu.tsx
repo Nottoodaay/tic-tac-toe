@@ -90,10 +90,12 @@ export const PlayerVsCpu = (props:{
       if(winner === 'X'){
         setCountX(countX + 1)
         setIsGameEnd(!isGameEnd)
+        setStatus('X')
       }
       if(winner === 'O'){  
         setCountO(countO + 1)
         setIsGameEnd(!isGameEnd)
+        setStatus('O')
       }
     } else if (isBoardFull(value)) { 
       setTie(tie + 1);
