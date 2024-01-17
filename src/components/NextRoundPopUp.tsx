@@ -40,7 +40,7 @@ export const NextRoundPopUp = (props:{
             <div className=' text-2xl font-bold text-[#A8BFC9]'>ROUND TIED</div>
           : 
             <div className={` text-2xl font-bold 
-            ${props.status === 'x' ? 'text-[#31C3BD]' 
+            ${props.status === 'X' ? 'text-[#31C3BD]' 
             :
             'text-[#F2B137]'}`}>{props.status} TAKES THE ROUND</div>
           }
