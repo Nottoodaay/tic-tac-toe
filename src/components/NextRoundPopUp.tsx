@@ -30,12 +30,21 @@ export const NextRoundPopUp = (props:{
         <div className=" w-full h-[228px] bg-[#1F3641] 
         flex items-center justify-center flex-col gap-6">
           
+          {props.isPlayerWinner === 'ROUND TIED' ? null 
+          : 
           <h2 className=" font-bold text-sm text-[#A8BFC9]">{props.isPlayerWinner}</h2>
+          }
+          
 
-          <div className={` text-2xl font-bold 
-          ${props.status === 'x' ? 'text-[#31C3BD]' 
-          :
-           'text-[#F2B137]'}`}>{props.status} TAKES THE ROUND</div>
+          {props.isPlayerWinner === 'ROUND TIED' ? 
+            <div className=' text-2xl font-bold text-[#A8BFC9]'>ROUND TIED</div>
+          : 
+            <div className={` text-2xl font-bold 
+            ${props.status === 'x' ? 'text-[#31C3BD]' 
+            :
+            'text-[#F2B137]'}`}>{props.status} TAKES THE ROUND</div>
+          }
+          
 
           <div className=" flex gap-4">
               <button 
