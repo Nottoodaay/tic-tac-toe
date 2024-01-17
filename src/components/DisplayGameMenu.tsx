@@ -42,15 +42,18 @@ export const DisplayGameMenu = ({
                  className={` bg-[${isX ? '#A8BFC9' : null}] bg-cover w-[130px] h-[54px] 
                  rounded-2xl flex items-center justify-center`}
                  onClick={()=>playerChoise('X')}>
-                    <div className=" w-[32px] h-[32px]
-                     bg-[url('/assets/icon-x.svg')] bg-cover"></div>
+                    <div className={` w-[32px] h-[32px]
+                    ${ isX ? "bg-[url('../assets/icon-x-outline-dark.svg')]" 
+                    : "bg-[url('../assets/icon-x-silver.svg')]"} bg-cover`}></div>
                  </div>
                  <div
                 className={` bg-[${isX ? null : '#A8BFC9'}] bg-cover w-[130px] h-[54px] 
                 rounded-2xl flex items-center justify-center`}
                  onClick={()=>playerChoise('O')}>
-                    <div className=" w-[32px] h-[32px]
-                     bg-[url('/assets/icon-o.svg')] bg-cover"></div>
+                    <div className={` w-[32px] h-[32px]
+                    ${isX ? "bg-[url('../assets/icon-o-silver.svg')]" 
+                    : "bg-[url('../assets/icon-o-outline-dark.svg')]" }
+                      bg-cover`}></div>
                  </div>
             </div>
             <p className=' text-sm text-[#A8BFC9]'>REMEMBER : X GOES FIRST</p>
