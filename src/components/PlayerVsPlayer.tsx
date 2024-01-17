@@ -24,6 +24,8 @@ export const PlayerVsPlayer = ({isX, setPlayerVsCpu, setPlayerVsPlayer}:PlayerVs
 
   const [winnerCombo, setWinnerCombo] = useState<number[]>([])
 
+  const [isPlayerWinner, setIsPlayerWinner] = useState('')
+
   const reset = () =>{
     setIsFirstPlayerX(isX)
     setValue(Array(9).fill(null))
@@ -76,15 +78,26 @@ export const PlayerVsPlayer = ({isX, setPlayerVsCpu, setPlayerVsPlayer}:PlayerVs
         setCountX(countX + 1)
         setIsGameEnd(true)
         setStatus('X')
+        if(isX){
+          setIsPlayerWinner('PLAYER 1 WINS!')
+        }if(isX === false){
+          setIsPlayerWinner('PLAYER 2 WINS!')
+        }
      }
      if(winner === 'O'){
         setCountO(countO + 1)
         setIsGameEnd(true)
         setStatus('O')
+        if(isX){
+           setIsPlayerWinner('PLAYER 2 WINS!')
+        }if(isX === false){
+          setIsPlayerWinner('PLAYER 1 WINS!')
+        }
      }
     }else if (isBoardFull(value)) {
         setTie(tie + 1)
         setIsGameEnd(true)
+        setIsPlayerWinner('ROUND TIED')
     }else{
       setStatus(`${isFirstPlayerX ? 'X' : 'O'} TURN`)
     }
@@ -203,6 +216,8 @@ export const PlayerVsPlayer = ({isX, setPlayerVsCpu, setPlayerVsPlayer}:PlayerVs
         setPlayerVsPlayer={setPlayerVsPlayer}
         setPlayerVsCpu={setPlayerVsCpu}
         setWinnerCombo={setWinnerCombo}
+        isPlayerWinner={isPlayerWinner}
+        setIsPlayerWinner={setIsPlayerWinner}
         /> 
         : null}
       

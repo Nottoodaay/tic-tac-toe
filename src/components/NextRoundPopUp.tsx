@@ -5,12 +5,15 @@ export const NextRoundPopUp = (props:{
   setPlayerVsCpu: (value: boolean) => void,
   setPlayerVsPlayer: (value: boolean) => void,
   setWinnerCombo: (value: []) => void,
+  setIsPlayerWinner: (value: string) => void
+  isPlayerWinner: string
   status: string,
 }) => {
   const nextRound = () =>{
     props.setValue(Array(9).fill(null))
     props.setIsGameEnd(false)
     props.setWinnerCombo([])
+    props.setIsPlayerWinner('')
   }
 
   const quit = () =>{
@@ -18,6 +21,7 @@ export const NextRoundPopUp = (props:{
     props.setPlayerVsPlayer(false)
     props.setPlayerVsCpu(false)
     props.setWinnerCombo([])
+    props.setIsPlayerWinner('')
   }
   return (
     <div className=" w-[100vw] h-[100vh] 
@@ -26,6 +30,8 @@ export const NextRoundPopUp = (props:{
         <div className=" w-full h-[228px] bg-[#1F3641] 
         flex items-center justify-center flex-col gap-6">
           
+          <h2 className=" font-bold text-sm text-[#A8BFC9]">{props.isPlayerWinner}</h2>
+
           <div className={` text-2xl font-bold 
           ${props.status === 'x' ? 'text-[#31C3BD]' 
           :

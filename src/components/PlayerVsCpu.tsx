@@ -23,6 +23,10 @@ export const PlayerVsCpu = (props:{
 
   const [winnerCombo, setWinnerCombo] = useState<number[]>([]) 
 
+  const [isPlayerWinner, setIsPlayerWinner] = useState('')
+
+  console.log(isPlayerWinner)
+
   const handleClick = (i: number) => {
     if(value[i]!= null)
       return
@@ -91,15 +95,26 @@ export const PlayerVsCpu = (props:{
         setCountX(countX + 1)
         setIsGameEnd(!isGameEnd)
         setStatus('X')
+        if(props.isX){
+          setIsPlayerWinner('You Won!')
+        }if(props.isCpuX){
+          setIsPlayerWinner('OH NO, YOU LOST…')
+        }
       }
       if(winner === 'O'){  
         setCountO(countO + 1)
         setIsGameEnd(!isGameEnd)
         setStatus('O')
+        if(props.isX){
+          setIsPlayerWinner('OH NO, YOU LOST…')
+        }if(props.isCpuX){
+          setIsPlayerWinner('You Won!')
+        }
       }
     } else if (isBoardFull(value)) { 
       setTie(tie + 1);
       setIsGameEnd(!isGameEnd)
+      setIsPlayerWinner('ROUND TIED')
     } else {
       if(props.isX){
         setStatus(`${isPlayerTurn ? 'X' : 'O'} TURN`);
@@ -237,6 +252,8 @@ export const PlayerVsCpu = (props:{
         setPlayerVsCpu={props.setPlayerVsCpu}
         setPlayerVsPlayer={props.setPlayerVsPlayer}
         setWinnerCombo={setWinnerCombo}
+        isPlayerWinner={isPlayerWinner}
+        setIsPlayerWinner={setIsPlayerWinner}
         />
         : null}
 
